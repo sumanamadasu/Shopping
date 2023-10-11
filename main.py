@@ -11,12 +11,12 @@ def main():
     #if len(sys.argv) != 2:
         #sys.exit("Usage: python shopping.py data")
 
-    # Load data from spreadsheet and split into train and test sets
+    # Load data from .csv and split into train and test sets
     evidence, labels = load_data(r"C:\Users\Sumana\Downloads\shopping.csv")
     X_train, X_test, y_train, y_test = train_test_split(evidence, labels, test_size=0.25)
 
     # Train model using Euclidean distance
-    # k=1 for nearest neighbors classifier
+    # For k=1 
     model_euc = train_nearest_neighbors_classifier(X_train, y_train, k=1, distance_metric='euclidean')
     predictions = model_euc.predict(X_test)
     sensitivity_euc, specificity_euc = evaluate(y_test, predictions)
@@ -31,7 +31,7 @@ def main():
     print(f"F1 score:{100 * f1_euc:.2f}%")
 
     # Train model using Manhattan distance
-    # k=1 for nearest neighbors classifier
+    # For k=1
     model_man = train_nearest_neighbors_classifier(X_train, y_train, k=1, distance_metric='manhattan')
     predictions = model_man.predict(X_test)
     sensitivity_man, specificity_man = evaluate(y_test, predictions)
@@ -45,8 +45,9 @@ def main():
     print(f"True Negative Rate: {100 * specificity_man:.2f}%")
     print(f"F1 score:{100 * f1_man:.2f}%")
 
+# To load data from a .csv file
 def load_data(filename):
-
+  
     months = {month: index-1 for index, month in enumerate(calendar.month_abbr) if index}
     months['June'] = months.pop('Jun')
 
@@ -79,7 +80,8 @@ def load_data(filename):
 
     return (evidence, labels)
 
-# Function to implement K-nearest neighbor classifier
+# To implement the K-nearest neighbor classifier
+# For k=1, we get the nearest neighbor classifier
 class NearestNeighborsClassifier:
     def __init__(self,k, distance_metric='euclidean_distance'):
         self.k = k
@@ -92,7 +94,7 @@ class NearestNeighborsClassifier:
     def predict(self, X_test):
         predictions = []
         for x_test in X_test:
-            # Calculate distances between the test point and all training points
+            # Calculate distances between each test point and all training points
             distances = [self.calculate_distance(x_test, x_train) for x_train in self.X_train]
 
             # Get indices of k nearest neighbors
@@ -121,7 +123,7 @@ def train_nearest_neighbors_classifier(X_train, y_train, k=1, distance_metric='e
 
     # Fit the classifier to the training data
     classifier.fit(X_train, y_train)
-
+     
     return classifier
 
 def evaluate(labels, predictions):
