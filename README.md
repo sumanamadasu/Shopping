@@ -1,4 +1,4 @@
-# Shopping
+# Prediciting shopping behavior of users using the nearest neighbor classifier
 
 The nearest Neighbors Classifier doesn't construct a model during the training phase. It stores the training dataset in memory and uses this stored information to predict outcomes for new data points by comparing them to the training examples based on the distance between them.
 
@@ -12,9 +12,10 @@ To use the Nearest Neighbors Classifier with Euclidean and Manhattan distance me
 2. **Install Dependencies:**
    - You may need to install the required libraries, such as NumPy and scikit-learn.
 
-3. Execute the main() function to run the classifier.
+3. Execute the main() function in nearest_neigbor_classifier.py to run the classifier.
+    ```
     python nearest_neighbor_classifier.py
-
+    ```
 
 5. The results include the number of correct and incorrect predictions, true positive rate (sensitivity), true negative rate (specificity), and F1 score for each distance metric.
 
