@@ -12,7 +12,8 @@ def main():
         sys.exit("Usage: python shopping.py data")
 
     # Load data from .csv and split into train and test sets
-    evidence, labels = load_data(r"C:\Users\Sumana\Downloads\shopping.csv")
+    evidence, labels = load_data(sys.argv[1])
+    #Test Size = 0.25
     X_train, X_test, y_train, y_test = train_test_split(evidence, labels, test_size=0.25)
 
     # Train model using Euclidean distance
