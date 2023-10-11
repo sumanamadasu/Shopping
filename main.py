@@ -8,8 +8,8 @@ import calendar
 def main():
 
     # Check command-line arguments
-    #if len(sys.argv) != 2:
-        #sys.exit("Usage: python shopping.py data")
+    if len(sys.argv) != 2:
+        sys.exit("Usage: python shopping.py data")
 
     # Load data from .csv and split into train and test sets
     evidence, labels = load_data(r"C:\Users\Sumana\Downloads\shopping.csv")
@@ -35,6 +35,7 @@ def main():
     model_man = train_nearest_neighbors_classifier(X_train, y_train, k=1, distance_metric='manhattan')
     predictions = model_man.predict(X_test)
     sensitivity_man, specificity_man = evaluate(y_test, predictions)
+    # F1 score = 2 * (Sensitivity * Specificity) / (Sensitivity + Specificity)
     f1_man = 2 * (sensitivity_man * specificity_man) / (sensitivity_man + specificity_man) if (sensitivity_man + specificity_man) > 0 else 0
 
     #print results for model trained using manhattan distance
@@ -47,10 +48,13 @@ def main():
 
 # To load data from a .csv file
 def load_data(filename):
-  
+
+    # Load the .csv file and convert rows into a list of evidence lists and a list of labels.
+    # Returns a tuple (evidence, labels).
+    
     months = {month: index-1 for index, month in enumerate(calendar.month_abbr) if index}
     months['June'] = months.pop('Jun')
-
+    
     evidence = []
     labels = []
 
@@ -68,15 +72,15 @@ def load_data(filename):
                 float(row['ExitRates']),
                 float(row['PageValues']),
                 float(row['SpecialDay']),
-                months[row['Month']],
+                months[row['Month']], #indexing months January-December as (0-11)
                 int(row['OperatingSystems']),
                 int(row['Browser']),
                 int(row['Region']),
                 int(row['TrafficType']),
-                1 if row['VisitorType'] == 'Returning_Visitor' else 0,
-                1 if row['Weekend'] == 'TRUE' else 0
+                1 if row['VisitorType'] == 'Returning_Visitor' else 0, #1 if VisitorType is Returning_Visitor, 0 otherwise
+                1 if row['Weekend'] == 'TRUE' else 0  #1 if Weekend is True (if user shops during the weekend), 0 otherwise
             ])
-            labels.append(1 if row['Revenue'] == 'TRUE' else 0)
+            labels.append(1 if row['Revenue'] == 'TRUE' else 0) #1 if Revenue is true, and 0 otherwise
 
     return (evidence, labels)
 
@@ -128,6 +132,9 @@ def train_nearest_neighbors_classifier(X_train, y_train, k=1, distance_metric='e
 
 def evaluate(labels, predictions):
 
+    #Given a list of actual labels and a list of predicted labels,
+    #Returns a tuple (sensitivity or true positive rate, specificity or true negative rate)
+    
     sensitivity = float(0)
     specificity = float(0)
 
