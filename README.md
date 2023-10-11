@@ -13,7 +13,8 @@ To use the Nearest Neighbors Classifier with Euclidean and Manhattan distance me
    - You may need to install the required libraries, such as NumPy and scikit-learn.
 
 3. Execute the main() function to run the classifier.
+   python nearest_neighbours_classifier.py
 
-4. The results include the number of correct and incorrect predictions, true positive rate (sensitivity), true negative rate (specificity), and F1 score for each distance metric.
+5. The results include the number of correct and incorrect predictions, true positive rate (sensitivity), true negative rate (specificity), and F1 score for each distance metric.
 
 While the Euclidean distance-based Nearest Neighbors Classifier showed stronger true positive and F1 scores for positive instances, the Manhattan distance-based classifier performed better in terms of true negatives (signifying its proficiency in accurately identifying negative instances). The choice between these metrics should be tailored to the specific requirements of the classification task.
