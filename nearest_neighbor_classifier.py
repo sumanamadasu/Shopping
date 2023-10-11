@@ -11,7 +11,8 @@ def main():
     if len(sys.argv) != 2:
         sys.exit("Usage: python nearest_neighbor_classifier.py shopping.csv")
 
-    # Load data from csv and split into train and test sets
+    # Get the CSV file path from the command-line argument
+    # Load data from csv and split it into train and test sets
     evidence, labels = load_data(sys.argv[1])
     #Test Size = 0.25
     X_train, X_test, y_train, y_test = train_test_split(evidence, labels, test_size=0.25)
