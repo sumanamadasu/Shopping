@@ -21,32 +21,29 @@ def main():
     # For k=1 
     model_euc = train_nearest_neighbors_classifier(X_train, y_train, k=1, distance_metric='euclidean')
     predictions = model_euc.predict(X_test)
-    sensitivity_euc, specificity_euc = evaluate(y_test, predictions)
-    f1_euc = 2 * (sensitivity_euc * specificity_euc) / (sensitivity_euc + specificity_euc) if (sensitivity_euc + specificity_euc) > 0 else 0
-
+    sensitivity_euc, specificity_euc,f1_score_euc  = evaluate(y_test, predictions)
+    
     # print results for model trained using Euclidean distance
     print("Results for Nearest Neighbor classifier using Euclidean distance:")
     print(f"Number of Correct Predictions: {(np.sum(np.array(y_test) == np.array(predictions))).sum()}")
     print(f"Number of Incorrect Predictions: {(np.sum(np.array(y_test) != np.array(predictions))).sum()}")
     print(f"True Positive Rate: {100 * sensitivity_euc:.2f}%")
     print(f"True Negative Rate: {100 * specificity_euc:.2f}%")
-    print(f"F1 score:{100 * f1_euc:.2f}%")
+    print(f"F1 score:{100 * f1_score_euc:.2f}%")
 
     # Train model using Manhattan distance
     # For k=1
     model_man = train_nearest_neighbors_classifier(X_train, y_train, k=1, distance_metric='manhattan')
     predictions = model_man.predict(X_test)
-    sensitivity_man, specificity_man = evaluate(y_test, predictions)
-    # F1 score = 2 * (Sensitivity * Specificity) / (Sensitivity + Specificity)
-    f1_man = 2 * (sensitivity_man * specificity_man) / (sensitivity_man + specificity_man) if (sensitivity_man + specificity_man) > 0 else 0
-
+    sensitivity_man, specificity_man,f1_score_man = evaluate(y_test, predictions)
+    
     #print results for model trained using manhattan distance
     print("Results for Nearest Neighbor classifier using Manhattan distance:")
     print(f"Number of Correct Predictions: {(np.sum(np.array(y_test) == np.array(predictions))).sum()}")
     print(f"Number of Incorrect Predictions: {(np.sum(np.array(y_test) != np.array(predictions))).sum()}")
     print(f"True Positive Rate: {100 * sensitivity_man:.2f}%")
     print(f"True Negative Rate: {100 * specificity_man:.2f}%")
-    print(f"F1 score:{100 * f1_man:.2f}%")
+    print(f"F1 score:{100 * f1_score_man:.2f}%")
 
 # To load data from a .csv file
 def load_data(filename):
@@ -142,6 +139,7 @@ def evaluate(labels, predictions):
 
     total_positive = float(0)
     total_negative = float(0)
+     False_positive=float(0)
 
     for label, prediction in zip(labels, predictions):
 
@@ -149,16 +147,21 @@ def evaluate(labels, predictions):
             total_positive += 1
             if label == prediction:
                 sensitivity += 1
-
+            
         if label == 0:
             total_negative += 1
             if label == prediction:
                 specificity += 1
+            else:
+                False_positive+=1
+            
+    precision = sensitivity/(sensitivity+False_positive)
+    sensitivity = sensitivity/total_positive
+    specificity = specificity/total_negative
+    
+    f1_score= 2* (sensitivity * precision) / (sensitivity_euc + precision) if (sensitivity_euc + precision) > 0 else 0
 
-    sensitivity /= total_positive
-    specificity /= total_negative
-
-    return sensitivity, specificity
+    return sensitivity, specificity, f1_score
 
 
 if __name__ == "__main__":
